@@ -493,9 +493,15 @@ GoLab is one of the tools built for [GolangForAll](https://golangforall.in) — 
 
 See the [community docs](https://www.golangforall.in/docs/intro) or [contribute](https://www.golangforall.in/docs/contribute) if you want to speak, write, or host a meetup.
 
+GoLab is the interactive execution service within the GolangForAll ecosystem:
+the community platform provides documentation, articles, build logs, and
+learning resources, while GoLab provides the browser-to-sandbox path for
+testing Go examples. The production frontend is served from Vercel and the
+runner is independently hosted on AWS EC2 behind Caddy, with Docker and
+systemd providing the execution and service-management boundary.
+
 ---
 
 ## License
 
 *Add a license (MIT, Apache-2.0, etc.) — none specified yet.*
-
