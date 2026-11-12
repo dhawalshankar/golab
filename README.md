@@ -44,11 +44,16 @@ golab/
     ├── next.config.ts
     ├── package.json
     └── ...
-````
+```
 
 ---
 
 ## Architecture
+
+GoLab separates the browser experience from the untrusted-code execution
+boundary. The Next.js frontend is public-facing; the Go runner is independently
+deployed and is the only component allowed to create compiler and runtime
+containers.
 
 ```text
                     HTTPS
@@ -502,6 +507,8 @@ systemd providing the execution and service-management boundary.
 
 ---
 
-## License
+## License and usage
 
-*Add a license (MIT, Apache-2.0, etc.) — none specified yet.*
+This repository does not currently declare an open-source license. Unless
+explicitly authorized by the owner, treat the source code, deployment
+configuration, and sandbox implementation as proprietary.
