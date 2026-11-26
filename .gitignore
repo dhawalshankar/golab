@@ -2,6 +2,7 @@
 node_modules/
 .next/
 out/
+churn-output.md
 
 # Go
 backend/app
