@@ -1,0 +1,19 @@
+[Unit]
+Description=GoLab Runner
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/golab/backend
+
+ExecStart=/home/ec2-user/golab/backend/app
+
+Restart=always
+RestartSec=3
+
+Environment=PORT=8080
+Environment=FRONTEND_URL=https://golab.golangforall.in
+
+[Install]
+WantedBy=multi-user.target

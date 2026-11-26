@@ -1,0 +1,88 @@
+sudo dnf update -y
+sudo dnf install -y golang git
+go version
+git --version
+git clone https://github.com/DhawalShankar/golab.git
+rm -rf ~/golab
+ssh-keygen -t ed25519 -C "golab-ec2"
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
+git clone git@github.com:DhawalShankar/golab.git
+cd ~/golab/backend
+ls
+go version
+go mod download
+go build -o app .
+./app
+curl http://localhost:8080/health
+curl -X POST http://localhost:8080/run   -H "Content-Type: application/json"   -d '{"code":"package main\nimport \"fmt\"\nfunc main(){fmt.Println(\"Hello World\")}","input":""}'
+sudo dnf install -y 'dnf-command(copr)'
+sudo dnf copr enable @caddy/caddy -y
+sudo dnf install -y caddy
+caddy version
+cd /tmp
+curl -L -o caddy.tar.gz https://caddyserver.com/api/download?os=linux&arch=amd64
+tar -xzf caddy.tar.gz
+cd /tmp
+rm -f caddy.tar.gz caddy
+curl -L -o caddy 'https://caddyserver.com/api/download?os=linux&arch=amd64'
+chmod +x caddy
+sudo mv caddy /usr/bin/caddy
+caddy version
+sudo nano /etc/caddy/Caddyfile
+sudo mkdir -p /etc/caddy
+sudo nano /etc/caddy/Caddyfile
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl enable caddy
+sudo systemctl start caddy
+sudo groupadd --system caddy
+sudo useradd --system   --gid caddy   --create-home   --home-dir /var/lib/caddy   --shell /usr/sbin/nologin   --comment "Caddy web server"   caddy
+sudo chown -R caddy:caddy /etc/caddy
+sudo nano /etc/systemd/system/caddy.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now caddy
+sudo systemctl status caddy
+curl http://localhost:8080/health
+cd ~/golab/backend
+./app
+sudo nano /etc/systemd/system/golab.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now golab
+sudo systemctl status golab
+curl http://localhost:8080/health
+curl http://localhost:8080/health
+sudo nano /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+sudo nano /etc/systemd/system/golab.service
+sudo systemctl daemon-reload
+sudo systemctl restart golab
+cd ~/golab
+cat deploy.sh
+cd backend
+cat deploy.sh
+nano ~/golab/backend/deploy.sh
+cat deploy.sh
+sudo yum update -y
+sudo yum install -y docker
+sudo systemctl enable --now docker
+sudo usermod -aG docker ec2-user
+logout
+cd ~/golab/backend
+nano deploy.sh
+chmod +x deploy.sh
+docker --version
+docker ps
+docker images
+cd ~/golab/backend
+./deploy.sh
+cd ~/golab/backend
+docker build -t golab-compiler:latest -f sandbox/compiler.Dockerfile .
+docker build -t golab-runtime:latest -f sandbox/runtime.Dockerfile .
+sudo systemctl restart golab
+sudo systemctl status golab --no-pager
+curl http://localhost:8080/health
+docker images
+curl -X POST http://localhost:8080/run   -H "Content-Type: application/json"   -d '{"code":"package main\nimport \"fmt\"\nfunc main(){fmt.Println(\"Hello from EC2\")}", "input":""}'
+curl -X POST http://localhost:8080/run   -H "Content-Type: application/json"   -d '{"code":"package main\nimport \"fmt\"\nfunc main(){fmt.Println(\"Hello from EC2\")}", "input":""}'
+cd ~/golab/backend
+./deploy.sh

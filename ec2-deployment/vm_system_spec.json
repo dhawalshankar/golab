@@ -1,0 +1,65 @@
+{
+  "instance_id": "i-01f086c5a44746100",
+  "instance_name": "GoLab-Runner",
+  "instance_type": "t3.micro",
+  "architecture": "x86_64",
+  "os_release": "Amazon Linux 2023.12.20260918",
+  "kernel": "6.18.48-109.150.amzn2023.x86_64",
+  "region": "ap-southeast-2",
+  "public_ip": "54.79.80.188",
+  "private_ip": "172.31.45.30",
+  "ssh_user": "ec2-user",
+  "exposed_ports": {
+    "22": "SSH Administration",
+    "80": "Caddy HTTP (redirects to HTTPS)",
+    "443": "Caddy HTTPS (Public TLS for api.golangforall.in)",
+    "8080": "Go Backend Runner (Internal loopback via Caddy reverse proxy)"
+  },
+  "domain_routing": {
+    "public_api": "https://api.golangforall.in",
+    "frontend_origin": "https://golab.golangforall.in",
+    "ssl_provider": "Let's Encrypt (Automated via Caddy)"
+  },
+  "installed_docker_images": [
+    {
+      "repository": "golab-compiler",
+      "tag": "latest",
+      "size": "243MB",
+      "source_dockerfile": "backend/sandbox/compiler.Dockerfile"
+    },
+    {
+      "repository": "golab-runtime",
+      "tag": "latest",
+      "size": "9.79MB",
+      "source_dockerfile": "backend/sandbox/runtime.Dockerfile"
+    },
+    {
+      "repository": "alpine",
+      "tag": "3.22",
+      "size": "8.3MB",
+      "purpose": "Go build cache chown initialization"
+    }
+  ],
+  "docker_volumes": [
+    {
+      "name": "golab-go-cache",
+      "mount": "/var/lib/docker/volumes/golab-go-cache/_data",
+      "uid_gid": "10001:10001"
+    }
+  ],
+  "systemd_services": [
+    {
+      "name": "golab.service",
+      "path": "/etc/systemd/system/golab.service",
+      "command": "/home/ec2-user/golab/backend/app",
+      "user": "ec2-user",
+      "port": 8080
+    },
+    {
+      "name": "caddy.service",
+      "path": "/etc/systemd/system/caddy.service",
+      "config": "/etc/caddy/Caddyfile",
+      "user": "caddy"
+    }
+  ]
+}
