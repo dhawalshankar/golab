@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Serverless migration of golab backend to AWS Lambda using a custom runtime (provided.al2023).
+  The Go binary is built as a bootstrap executable and invoked via a thin Python adapter.
+
+Globals:
+  Function:
+    Timeout: 15   # seconds, matches compile/run timeouts
+    MemorySize: 256
+    Runtime: provided.al2023
+    Architectures:
+      - arm64
+    Environment:
+      Variables:
+        # Add any environment variables required by the Go binary here
+        LOG_LEVEL: INFO
+
+Resources:
+  GolabFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: lambda_function.lambda_handler   # Ignored by custom runtime but required by SAM
+      # The compiled Go binary must be named 'bootstrap' and placed at the root of CodeUri.
+      # The Python adapter (lambda_function.py) is also placed here.
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiEndpoint:
+    Description: URL of the HTTP API endpoint
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
