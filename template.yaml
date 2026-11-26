@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Serverless proxy for Golab backend decoupled to ECS Fargate.
+  The Lambda forwards all HTTP requests to the backend service running in
+  an ECS Fargate task.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: python3.12
+    Architectures:
+      - arm64
+    Environment:
+      Variables:
+        BACKEND_URL: "https://<your-backend-endpoint>"
+
+Resources:
+  GolabProxyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: lambda_function.lambda_handler
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Events:
+        ProxyApi:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '2.0'
+
+Outputs:
+  FunctionArn:
+    Description: ARN of the Golab proxy Lambda function
+    Value: !GetAtt GolabProxyFunction.Arn
